@@ -3,12 +3,17 @@ FROM ubuntu:22.04
 # gcc installation
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-    apt-get -y install gcc procps tree htop curl wget nano mono-mcs zip unzip
+    apt-get -y install gcc procps tree htop curl wget nano mono-mcs zip unzip git
 RUN apt-get update && \
     apt-get -y install build-essential \
     libncursesw5-dev libssl-dev libgdbm-dev \
     libc6-dev libsqlite3-dev libbz2-dev libffi-dev zlib1g \
     libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+
+RUN apt-get update && apt-get install -y locales
+RUN locale-gen en_IN.UTF-8
+RUN update-locale LC_ALL=en_IN.UTF-8 LANG=en_IN.UTF-8
+ENV LC_ALL="en_IN.UTF-8"
 
 # nodejs installation
 RUN apt-get update
