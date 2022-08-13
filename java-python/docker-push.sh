@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker push amithkoujalgi/java-python:1.0.0
+docker push amithkoujalgi/ubuntu-java-python-nginx-php-node:1.0.0
