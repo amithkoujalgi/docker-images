@@ -40,6 +40,8 @@ RUN wget -O /downloads/Anaconda3-2022.05-Linux-x86_64.sh https://repo.anaconda.c
 RUN /bin/bash /downloads/Anaconda3-2022.05-Linux-x86_64.sh -b
 RUN rm /downloads/Anaconda3-2022.05-Linux-x86_64.sh
 ENV PATH /root/anaconda3/bin:$PATH
+RUN echo "export PATH=$PATH:/root/anaconda3/bin">> /home/ubuntu/.profile
+
 RUN conda config --set auto_activate_base True
 
 # Install supervisor

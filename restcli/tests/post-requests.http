@@ -1,0 +1,28 @@
+### Basic authorization.
+GET {{BASE_URL}}/basic-auth/user/passwd
+Authorization: Basic user passwd
+
+### Basic authorization with variables.
+GET {{BASE_URL}}/basic-auth/user/passwd
+Authorization: Basic {{username}} {{password}}
+
+### Digest authorization.
+GET {{BASE_URL}}/digest-auth/realm/user/passwd
+Authorization: Digest user passwd
+
+### Digest authorization with variables.
+GET {{BASE_URL}}/digest-auth/realm/user/passwd
+Authorization: Digest {{username}} {{password}}
+
+### Authorization by token, part 1. Retrieve and save token.
+POST {{BASE_URL}}/post
+Content-Type: application/json
+
+{
+  "token": "my-secret-token"
+}
+
+> {% client.global.set("auth_token", response.body.json.token); %}
+
+
+
