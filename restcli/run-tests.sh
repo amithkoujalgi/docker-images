@@ -7,11 +7,11 @@
 #  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 #done
 #DIR=$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)
-#TESTS_DIR=$DIR/tests
+#MOUNT_PATH=$DIR/tests
 SCRIPT_FILE_NAME=$(basename "$0")
 
 function usage() {
-  printf "\nInvalid arguments provided! \n\n[Usage]: ./$SCRIPT_FILE_NAME <tests-directory-path> <test-http-file> <env>"
+  printf "\nInvalid arguments provided! \n\n[Usage]: ./$SCRIPT_FILE_NAME <tests-directory-path> <test-http-file-or-dir> <env>"
   printf "\n\n[Example]: ./$SCRIPT_FILE_NAME /home/someuser/tests get-requests.http dev\n\n"
   exit 1
 }
@@ -24,18 +24,25 @@ if [ $# != 3 ]; then
   usage
 fi
 
-TESTS_DIR=$1
-TESTS_HTTP_FILE=$2
+MOUNT_PATH=$1
+SOURCE=$2
 TESTS_ENV=$3
 
-if [ ! -d "$TESTS_DIR" ]; then
-  echo "$TESTS_DIR does not exist."
+if [ ! -d "$MOUNT_PATH" ]; then
+  echo "$MOUNT_PATH does not exist."
 fi
+pwd
+pip install -r app/requirements.txt
+echo "Mounting $MOUNT_PATH on to /home/ubuntu/api-tests..."
 
-echo "Mounting $TESTS_DIR on to /home/ubuntu/api-tests..."
+#docker run -it \
+#  -e MODE=files \
+#  -e SOURCE="$SOURCE" \
+#  -e TEST_ENV="$TESTS_ENV" \
+#  -v "$MOUNT_PATH":/home/ubuntu/api-tests \
+#  api-tests:1.0
 
 docker run -it \
-  -e TEST_ENV=$TESTS_ENV \
-  -e TEST_SRC_FILE=$TESTS_HTTP_FILE \
-  -v $TESTS_DIR:/home/ubuntu/api-tests \
+  -e MODE=server \
+  -p 8000:8000 \
   api-tests:1.0
